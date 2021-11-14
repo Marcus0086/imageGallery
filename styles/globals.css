@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import url("https://fonts.googleapis.com/css2?family=Bungee+Inline&family=Pattaya&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .h-l-screen {
+    height: 92vh;
+  }
+  .text-fm-bungee {
+    font-family: "Bungee Inline", cursive;
+  }
+
+  .text-pattya {
+    font-family: "Pattaya", sans-serif;
+  }
+
+  .w-large {
+    width: 36rem;
+  }
+
+  @variants responsive {
+    .masonry-3-col {
+      column-count: 3;
+      column-gap: 1em;
+    }
+    .masonry-2-col {
+      column-count: 2;
+      column-gap: 1em;
+    }
+    .break-inside {
+      break-inside: avoid;
+    }
+  }
+}
+
+@layer base {
+  body {
+    height: 100vh;
+    @apply dark:bg-primary bg-white ease-in-out transition-all;
+  }
+
+  input:checked ~ .dot {
+    transform: translateX(100%);
+  }
+}
+
+@layer components {
+  .option {
+    @apply cursor-pointer hover:bg-gray-200 transition duration-200 ease-out p-2 rounded-xl mx-2 dark:hover:bg-grayish select-none;
+  }
+
+  .masonary {
+    @apply md:masonry-2-col lg:masonry-3-col box-border mx-auto px-2 py-4 laptop:px-10 laptop:py-16 desktop:px-32 desktop:py-24;
+  }
+
+  .search {
+    @apply hidden desktop:mx-10 w-80 bgdesktop:w-large mx-2 desktop:flex items-center
+    justify-center bg-gray-100 text-gray-400 rounded-lg px-4 py-2 focus-within:shadow-md 
+    focus-within:text-gray-600 dark:bg-lgrayish dark:text-gray-400;
+  }
+}
