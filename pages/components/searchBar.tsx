@@ -3,9 +3,11 @@ import SearchIcon from "./icons/searchicon";
 import CrossIcon from "./icons/crossicon";
 import { createApi } from "unsplash-js";
 import { Context } from "../store";
-import type { Basic } from "unsplash-js/dist/methods/photos/types";
 
-const SearchBar = () => {
+
+const SearchBar = (props: JSX.IntrinsicAttributes &
+  React.ClassAttributes<HTMLDivElement> &
+  React.HTMLAttributes<HTMLDivElement>) => {
   const unsplash = createApi({
     accessKey: "4h_Cgeob8pyOszhu1e6u72a2m-TG_QKbRFvnk1vNZVA"
   });
@@ -55,10 +57,19 @@ const SearchBar = () => {
         perPage: 10
       })
       .then((res) => {
+        const result = res.response?.results.map((val) => {
+          return { ...val, title: searchQuery }
+        });
         dispatch({
           type: "Update_Data",
-          payload: res.response?.results
+          payload: result
         });
+        const titleid = document.getElementById("title");
+        if (titleid) {
+          titleid.scrollIntoView({
+            behavior: 'smooth'
+          })
+        }
       });
   };
 
@@ -79,7 +90,7 @@ const SearchBar = () => {
   const handler = useCallback(debounce(searchImages, 600), []); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <div className="flex items-center justify-center flex-col flex-grow">
-      <div className="search" onFocus={turnDiv}>
+      <div {...props} onFocus={turnDiv}>
         <SearchIcon aria-label="Search" />
         <input
           type="text"
@@ -96,7 +107,7 @@ const SearchBar = () => {
       {tagData.length > 0 && (
         <div
           className={
-            isVisible ? "search mt-4 absolute top-14 h-auto p-4" : "hidden"
+            isVisible ? `${props.className} mt-4 absolute top-14 h-auto p-4` : "hidden"
           }
         >
           <ul className="top-14 w-full">

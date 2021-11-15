@@ -8,11 +8,20 @@ import { useState } from "react";
 import Link from "next/link";
 const Navbar = () => {
   const [isHidden, setHidden] = useState(false);
+  const [isHiddenSearch, setHiddenSearch] = useState(false);
+
   const turnSideNavOn = () => {
     setHidden(true);
   };
   const turnSideNavOff = () => {
     setHidden(false);
+  };
+
+  const turnSearchNavOff = () => {
+    setHiddenSearch(false);
+  };
+  const turnSearchNavOn = () => {
+    setHiddenSearch(!isHiddenSearch ? true : false);
   };
   return (
     <>
@@ -23,14 +32,14 @@ const Navbar = () => {
         <h3 className="text-pattya text-2xl lgmobile:text-3xl ">
           Image Gallery
         </h3>
-        <SearchBar />
+        <SearchBar className='search' />
         <NavUlComponent className="hidden desktop:flex items-center justify-between text-sm font-bold w-60 desktop:w-72" />
         <div className="hidden desktop:flex items-center justify-center mx-12">
           <h3 className="text-sm font-bold mx-2">Dark Mode</h3>
           <Toggle />
         </div>
         <div className="desktop:hidden flex items-center justify-center">
-          <SearchIcon className="option" />
+          <SearchIcon className="option" onClick={turnSearchNavOn} />
           <HamBurgerIcon className="option" onClick={turnSideNavOn} />
         </div>
         <aside
@@ -64,6 +73,13 @@ const Navbar = () => {
             </div>
           </div>
         </aside>
+        <nav className={`desktop:hidden transform top-0 right-0 left-0 bg-white dark:!bg-primary text-grayish dark:text-white fixed 
+        overflow-auto ease-in-out transition-all duration-300 z-30 p-6 ${isHiddenSearch ? "translate-y-0" : "-translate-y-full"
+          }`}>
+          <CrossIcon onClick={turnSearchNavOff} className='option w-10' />
+          <br />
+          <SearchBar className="searchn" />
+        </nav>
       </nav>
     </>
   );

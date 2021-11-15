@@ -28,7 +28,12 @@ module.exports = {
         grayish: "#141414"
       },
       backgroundImage: {
-        mountain: 'url("/back.png")'
+        mountain: 'url("/back.png")',
+        loading: 'url("/lottie-unscreen.gif")'
+      },
+      zIndex: {
+        '-2': '-2',
+        '-10': '-10'
       },
       typography: (theme) => ({
         dark: {

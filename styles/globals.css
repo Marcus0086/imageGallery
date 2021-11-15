@@ -21,6 +21,23 @@
     width: 36rem;
   }
 
+  .w-elarge { 
+    width: 72rem
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+  }
+  
+  .bg-bm {
+    background-blend-mode: screen;
+  }
+
   @variants responsive {
     .masonry-3-col {
       column-count: 3;
@@ -58,6 +75,12 @@
 
   .search {
     @apply hidden desktop:mx-10 w-80 bgdesktop:w-large mx-2 desktop:flex items-center
+    justify-center bg-gray-100 text-gray-400 rounded-lg px-4 py-2 focus-within:shadow-md 
+    focus-within:text-gray-600 dark:bg-lgrayish dark:text-gray-400;
+  }
+
+  .searchn {
+    @apply desktop:hidden w-80 bgdesktop:w-large mx-auto flex items-center
     justify-center bg-gray-100 text-gray-400 rounded-lg px-4 py-2 focus-within:shadow-md 
     focus-within:text-gray-600 dark:bg-lgrayish dark:text-gray-400;
   }

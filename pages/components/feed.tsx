@@ -4,8 +4,12 @@ import { useState, useEffect, useContext } from "react";
 import { Context } from "../store";
 import ImagePopUp from "./imagePopup";
 import { MapProps } from "./types/mapprops";
-
+import { createApi } from "unsplash-js";
+import SearchBar from './searchBar';
 const Feed = () => {
+  const unsplash = createApi({
+    accessKey: "4h_Cgeob8pyOszhu1e6u72a2m-TG_QKbRFvnk1vNZVA"
+  });
   const [isLoading, setIsLoading] = useState(true);
   const [state, dispatch] = useContext(Context);
   const [open, setOpen] = useState(false);
@@ -30,6 +34,31 @@ const Feed = () => {
     }
   }, [AccessKey, dispatch, state.data.length]);
 
+  const upDateData = (title: string) => {
+    const searchQuery = title;
+    unsplash.search
+      .getPhotos({
+        query: searchQuery,
+        page: 1,
+        perPage: 10
+      })
+      .then((res) => {
+        const result = res.response?.results.map((val) => {
+          return { ...val, title: searchQuery }
+        });
+        dispatch({
+          type: "Update_Data",
+          payload: result
+        });
+        const titleid = document.getElementById("title");
+        if (titleid) {
+          titleid.scrollIntoView({
+            behavior: 'smooth'
+          })
+        }
+      });
+  };
+
   return (
     <>
       {!isLoading ? <div>
@@ -43,6 +72,26 @@ const Feed = () => {
             </p>
           </div>
         </div>
+        {state.data[0]?.title &&
+          <div id='title' className="flex items-center justify-start w-full p-4 mt-12">
+            <h1 className="text-3xl tablet:text-4xl font-bold text-gray-600 dark:text-white mx-auto tablet:mx-32">{
+              `${state.data[0].title}`.charAt(0).toUpperCase() + `${state.data[0].title}`.slice(1)}
+            </h1>
+          </div>}
+        {state.data[0]?.tags &&
+          <ul id='carousel' className='mt-6 flex items-center justify-between w-96 tablet:w-large no-scrollbar 
+          desktop:w-elarge p-4 mx-auto overflow-x-auto '>
+            {state.data?.map((val: any, id: number) => {
+              const rtitle = `${val.tags[0]?.title}`.charAt(0).toUpperCase() + `${val.tags[0]?.title}`.slice(1);
+              return <li
+                onClick={() => upDateData(rtitle)}
+                className='flex items-center justify-center text-center border-2 cursor-pointer
+                border-gray-300 hover:border-gray-500 rounded-md px-8 py-4 m-4' key={id}>
+                {rtitle}
+              </li>
+            })}
+          </ul>
+        }
         <div className="masonary">
           {state.data?.map(
             (
@@ -54,7 +103,7 @@ const Feed = () => {
                 },
                 blur_hash,
                 description,
-                urls: { regular, small },
+                urls: { regular },
                 likes
               }: MapProps,
               idx: number
